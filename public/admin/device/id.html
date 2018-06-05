@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Device: Find based on Mac Address</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script>
+	// Loads records for a mac address from via AJAX
+
+	$(document).ready(function() {
+	    var $host = $(location).attr('host');
+	    var $table = $('#results tbody');
+
+	    // Extract parameters from page URL
+	    var params = {};
+	    window.location.search
+	        .replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+	            params[key] = value;
+	        });
+
+	    // Check if page has params
+	    if (params.mac != null) {
+	        $("#mac").val(params.mac);
+	        loadResults();
+	    }
+
+	    // If form submitted, load mac address query results
+	    $("#loadList").click(loadResults());
+
+	    // Retrieve mac address query results from the API
+	    function loadResults() {
+	        var macAddress = $("#mac").val().toLowerCase();
+	        var queryURL = location.protocol + "//" + $host + "/meraki/api/v1/device/" + macAddress;
+	        var deviceDetailPage = location.protocol + "//" + $host + "/meraki/admin/device/id?mac=";
+
+	        $table.empty();
+	        $table.append("Loading ...");
+
+	        $.ajax({
+	            url: queryURL,
+	            cache: false,
+	            success: function(data) {
+	                $table.empty();
+	                $.each(data, function(i, record) {
+	                    $table.append("<tr>");
+	                    $table.append("<td>" + "<a href='" + deviceDetailPage + record.client_mac + "'>" + record.client_mac + "</a></td>");
+	                    $table.append("<td>" + record.last_seen + "</td>");
+	                    $table.append("<td>" + record.rssi + "</td>");
+	                    $table.append("</tr>");
+
+	                });
+	            }
+	        });
+	    }
+	});
+	</script>
+
+</head>
+<body>
+
+	<div class="container">
+		<h2>Device: Find based on Mac Address</h2>
+		<p>Insert the mac address in the form of <em>11:22:33:44:55:66</em> of the device you'd like to see logs of</p>
+		<div class="form-group">
+			<div class="col-md-12">
+				<label for="mac">Mac address:</label>
+			</div>
+			<div class="col-md-8">
+				<input type="text" class="form-control" id="mac">
+			</div>
+			<div class="col-md-4">
+				<button type="button" class="btn btn-primary" id="loadList" ">List</button>
+			</div>
+		</div>
+
+		<table class="table" id="results">
+			<thead>
+				<tr>
+					<th>Mac Addddddress</th>
+					<th>Last Seen</th>
+					<th>RSSI</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+
+		</table>
+
+	</div>
+
+</body>
+</html>

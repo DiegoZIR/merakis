@@ -1,0 +1,18 @@
+{
+  "name": "meraki-scanning-api-demo",
+  "version": "1.0.0",
+  "description": "A demo node.js app to show off Meraki Scanning API",
+  "main": "merakiReceiver.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "lowdb": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node merakiReceiver.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Boris Kováč <boro.kovac@gmail.com>",
+  "license": "MIT"
+}

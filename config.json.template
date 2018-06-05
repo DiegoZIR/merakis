@@ -1,0 +1,5 @@
+{
+	"secret" : "<INSERT_SECRET>",
+	"validator" : "<INSERT_VALIDATOR>",
+	"listenport" : 9202
+}

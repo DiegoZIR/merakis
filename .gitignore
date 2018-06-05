@@ -1,0 +1,6 @@
+/node_modules
+/data/devices.json
+/data/nicks.json
+/data/records.json
+/samples
+config.json
